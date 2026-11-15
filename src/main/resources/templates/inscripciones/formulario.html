@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: head('Nueva inscripción')}"></head>
+<body><nav th:replace="~{fragmentos :: menu}"></nav>
+<main class="container py-5 contenedor-formulario">
+  <a th:href="@{/inscripciones}" class="text-decoration-none small">← Volver a inscripciones</a>
+  <h1 class="h2 fw-bold mt-3 mb-4">Inscribir a una actividad</h1>
+  <div th:replace="~{fragmentos :: avisos}"></div>
+  <form th:action="@{/inscripciones/guardar}" th:object="${form}" method="post" class="card bloque p-4 p-md-5">
+    <div class="mb-4"><label for="socio" class="form-label">Socio *</label>
+      <select id="socio" class="form-select" th:field="*{socioId}" required><option value="">Seleccioná un socio activo</option><option th:each="s : ${socios}" th:value="${s.id}" th:text="${s.nombreCompleto() + ' · DNI ' + s.dni}">Socio</option></select>
+      <div class="error-campo" th:errors="*{socioId}"></div>
+    </div>
+    <div class="mb-4"><label for="actividad" class="form-label">Actividad *</label>
+      <select id="actividad" class="form-select" th:field="*{actividadId}" required><option value="">Seleccioná una actividad</option><option th:each="a : ${actividades}" th:value="${a.actividad.id}" th:text="${a.actividad.nombre + ' · ' + a.actividad.dia + ' ' + a.actividad.hora + ' · Libres: ' + a.disponibles()}">Actividad</option></select>
+      <div class="error-campo" th:errors="*{actividadId}"></div>
+    </div>
+    <div class="alert alert-info small">La inscripción se registra con la fecha actual. El sistema evita duplicados y verifica el cupo.</div>
+    <div class="d-flex gap-2"><button class="btn btn-primary" type="submit">Confirmar inscripción</button><a th:href="@{/inscripciones}" class="btn btn-outline-secondary">Volver</a></div>
+  </form>
+</main><footer th:replace="~{fragmentos :: pie}"></footer>
+</body></html>

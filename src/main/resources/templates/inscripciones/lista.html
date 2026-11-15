@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: head('Inscripciones')}"></head>
+<body><nav th:replace="~{fragmentos :: menu}"></nav>
+<main class="container py-5">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div><p class="seccion-titulo">CONTROL DE CUPOS</p><h1 class="h2 fw-bold mb-0">Inscripciones</h1></div>
+    <a th:href="@{/inscripciones/nueva}" class="btn btn-primary">+ Registrar inscripción</a>
+  </div>
+  <div th:replace="~{fragmentos :: avisos}"></div>
+  <form class="card filtro p-3 mb-4" method="get" th:action="@{/inscripciones}">
+    <div class="row g-2"><div class="col-md-9"><select class="form-select" name="actividadId"><option value="">Todas las actividades</option>
+      <option th:each="a : ${actividades}" th:value="${a.actividad.id}" th:selected="${actividadId != null and actividadId.equals(a.actividad.id)}" th:text="${a.actividad.nombre}">Yoga</option>
+    </select></div><div class="col-md-3 d-grid"><button class="btn btn-dark" type="submit">Filtrar inscripciones</button></div></div>
+  </form>
+  <div class="card bloque"><div class="table-responsive"><table class="table tabla align-middle mb-0">
+    <thead><tr><th>ID</th><th>Socio</th><th>Actividad</th><th>Fecha</th><th>Estado</th><th>Acción</th></tr></thead>
+    <tbody>
+      <tr th:each="i : ${inscripciones}">
+        <td th:text="${i.id}">1</td><td class="fw-semibold" th:text="${i.socio}">Apellido, nombre</td>
+        <td th:text="${i.actividad}">Spinning</td><td th:text="${i.fecha}">2026-11-15</td>
+        <td><span class="badge" th:classappend="${i.estaActiva()} ? 'text-bg-success' : 'text-bg-secondary'" th:text="${i.estaActiva()} ? 'Activa' : 'Cancelada'">Activa</span></td>
+        <td><form th:if="${i.estaActiva()}" method="post" th:action="@{/inscripciones/{id}/cancelar(id=${i.id})}" onsubmit="return confirm('¿Cancelar la inscripción y liberar el cupo?');"><button class="btn btn-sm btn-outline-danger" type="submit">Cancelar inscripción</button></form><small th:unless="${i.estaActiva()}" class="text-muted">Sin acciones</small></td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(inscripciones)}"><td colspan="6" class="text-center text-muted py-5">Todavía no hay inscripciones para este filtro.</td></tr>
+    </tbody>
+  </table></div></div>
+</main><footer th:replace="~{fragmentos :: pie}"></footer>
+</body></html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: head('Actividades')}"></head>
+<body><nav th:replace="~{fragmentos :: menu}"></nav>
+<main class="container py-5">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div><p class="seccion-titulo">GESTIÓN DE CLASES</p><h1 class="h2 fw-bold mb-0">Actividades</h1></div>
+    <a th:href="@{/actividades/nueva}" class="btn btn-primary">+ Nueva actividad</a>
+  </div>
+  <div th:replace="~{fragmentos :: avisos}"></div>
+  <form class="card filtro p-3 mb-4" method="get" th:action="@{/actividades}">
+    <div class="row g-2"><div class="col-md-9"><input class="form-control" type="search" name="buscar" th:value="${buscar}" placeholder="Buscar por nombre o día"></div><div class="col-md-3 d-grid"><button class="btn btn-dark" type="submit">Buscar / filtrar</button></div></div>
+  </form>
+  <div class="card bloque"><div class="table-responsive"><table class="table tabla align-middle mb-0">
+    <thead><tr><th>Actividad</th><th>Día y hora</th><th>Cupo</th><th>Inscriptos</th><th>Libres</th><th>Estado</th><th>Acciones</th></tr></thead>
+    <tbody>
+      <tr th:each="a : ${actividades}">
+        <td><strong th:text="${a.actividad.nombre}">Yoga</strong><div class="text-muted small" th:text="${a.actividad.descripcion}">Descripción</div></td>
+        <td th:text="${a.actividad.dia + ' · ' + a.actividad.hora}">Lunes · 18:00</td>
+        <td th:text="${a.actividad.cupo}">20</td><td th:text="${a.ocupados}">3</td>
+        <td><span class="badge text-bg-light" th:text="${a.disponibles()}">17</span></td>
+        <td><span class="badge" th:classappend="${a.actividad.activa} ? 'text-bg-success' : 'text-bg-secondary'" th:text="${a.actividad.activa} ? 'Activa' : 'Inactiva'">Activa</span></td>
+        <td><div class="d-flex gap-2 flex-wrap"><a class="btn btn-sm btn-outline-primary" th:href="@{/actividades/{id}/editar(id=${a.actividad.id})}">Editar</a>
+          <form method="post" th:action="@{/actividades/{id}/eliminar(id=${a.actividad.id})}" onsubmit="return confirm('¿Eliminar esta actividad? Si tiene inscripciones, no se podrá eliminar.');"><button class="btn btn-sm btn-outline-danger" type="submit">Eliminar</button></form>
+        </div></td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(actividades)}"><td colspan="7" class="text-center text-muted py-5">Todavía no hay actividades para mostrar.</td></tr>
+    </tbody>
+  </table></div></div>
+</main><footer th:replace="~{fragmentos :: pie}"></footer>
+</body></html>

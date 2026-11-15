@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: head('No se pudo completar')}"></head>
+<body>
+<nav th:replace="~{fragmentos :: menu}"></nav>
+<main class="container py-5 contenedor-formulario">
+    <div class="card bloque p-5"><h1 class="h3">No se pudo completar la operación</h1>
+    <p class="text-muted" th:text="${mensaje}">Descripción del error</p>
+    <a class="btn btn-primary align-self-start" th:href="@{/}">Ir al inicio</a></div>
+</main>
+<footer th:replace="~{fragmentos :: pie}"></footer>
+</body>
+</html>

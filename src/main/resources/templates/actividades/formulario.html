@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: head('Formulario de actividad')}"></head>
+<body><nav th:replace="~{fragmentos :: menu}"></nav>
+<main class="container py-5 contenedor-formulario">
+  <a th:href="@{/actividades}" class="text-decoration-none small">← Volver a actividades</a>
+  <h1 class="h2 fw-bold mt-3 mb-4" th:text="${titulo}">Nueva actividad</h1>
+  <div th:replace="~{fragmentos :: avisos}"></div>
+  <form th:action="@{/actividades/guardar}" th:object="${form}" method="post" class="card bloque p-4 p-md-5">
+    <input type="hidden" th:field="*{id}">
+    <div class="row g-3">
+      <div class="col-12"><label for="nombre" class="form-label">Nombre de la actividad *</label><input id="nombre" th:field="*{nombre}" class="form-control" required maxlength="90" placeholder="Ej.: Yoga, funcional, spinning"><div class="error-campo" th:errors="*{nombre}"></div></div>
+      <div class="col-12"><label for="descripcion" class="form-label">Descripción</label><textarea id="descripcion" th:field="*{descripcion}" class="form-control" maxlength="250" rows="2"></textarea><div class="error-campo" th:errors="*{descripcion}"></div></div>
+      <div class="col-md-4"><label for="dia" class="form-label">Día de la semana *</label><select id="dia" th:field="*{dia}" class="form-select" required><option value="">Seleccionar</option><option value="Lunes">Lunes</option><option value="Martes">Martes</option><option value="Miercoles">Miércoles</option><option value="Jueves">Jueves</option><option value="Viernes">Viernes</option><option value="Sabado">Sábado</option><option value="Domingo">Domingo</option></select><div class="error-campo" th:errors="*{dia}"></div></div>
+      <div class="col-md-4"><label for="hora" class="form-label">Horario *</label><input type="time" id="hora" th:field="*{hora}" class="form-control" required><div class="error-campo" th:errors="*{hora}"></div></div>
+      <div class="col-md-4"><label for="cupo" class="form-label">Cupo máximo *</label><input type="number" min="1" id="cupo" th:field="*{cupo}" class="form-control" required><div class="error-campo" th:errors="*{cupo}"></div></div>
+      <div class="col-12"><div class="form-check"><input id="activa" type="checkbox" th:field="*{activa}" class="form-check-input"><label class="form-check-label" for="activa">Actividad habilitada para inscripciones</label></div></div>
+    </div>
+    <p class="text-muted small mt-4 mb-0">No se permite bajar el cupo por debajo de las inscripciones activas.</p>
+    <div class="d-flex gap-2 mt-3"><button class="btn btn-primary" type="submit">Guardar actividad</button><a class="btn btn-outline-secondary" th:href="@{/actividades}">Cancelar</a></div>
+  </form>
+</main><footer th:replace="~{fragmentos :: pie}"></footer>
+</body></html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: head('Panel principal')}"></head>
+<body>
+<nav th:replace="~{fragmentos :: menu}"></nav>
+<main class="container py-5">
+    <div class="hero mb-5">
+        <span class="etiqueta">PANEL DE ADMINISTRACIÓN</span>
+        <h1 class="display-5 fw-bold mb-3">Tu gimnasio, organizado.</h1>
+        <p class="mb-4 text-secondary">Administrá socios, actividades, cupos e inscripciones desde un solo lugar.</p>
+        <a class="btn btn-primary btn-lg" th:href="@{/inscripciones/nueva}">+ Nueva inscripción</a>
+    </div>
+    <div th:replace="~{fragmentos :: avisos}"></div>
+    <div class="row g-3 mb-5">
+        <div class="col-md-4"><div class="card resumen h-100"><div class="card-body p-4">
+            <div class="descripcion-metrica">Socios activos</div>
+            <div class="numero" th:text="${totalSocios}">0</div>
+            <a th:href="@{/socios}" class="enlace-metrica">Ver socios</a>
+        </div></div></div>
+        <div class="col-md-4"><div class="card resumen h-100"><div class="card-body p-4">
+            <div class="descripcion-metrica">Actividades habilitadas</div>
+            <div class="numero" th:text="${totalActividades}">0</div>
+            <a th:href="@{/actividades}" class="enlace-metrica">Ver actividades</a>
+        </div></div></div>
+        <div class="col-md-4"><div class="card resumen h-100"><div class="card-body p-4">
+            <div class="descripcion-metrica">Inscripciones vigentes</div>
+            <div class="numero" th:text="${totalInscripciones}">0</div>
+            <a th:href="@{/inscripciones}" class="enlace-metrica">Ver inscripciones</a>
+        </div></div></div>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-3 gap-3">
+        <h2 class="h4 fw-bold mb-0">Actividades y cupos</h2>
+        <a class="btn btn-outline-primary" th:href="@{/actividades/nueva}">+ Crear actividad</a>
+    </div>
+    <div class="card bloque">
+        <div class="table-responsive">
+            <table class="table tabla mb-0">
+                <thead><tr><th>Actividad</th><th>Día y horario</th><th>Cupo</th><th>Disponibles</th></tr></thead>
+                <tbody>
+                <tr th:each="a : ${actividades}">
+                    <td class="fw-semibold" th:text="${a.actividad.nombre}">Funcional</td>
+                    <td th:text="${a.actividad.dia + ' · ' + a.actividad.hora}">Lunes · 18:00</td>
+                    <td th:text="${a.actividad.cupo}">20</td>
+                    <td><span th:text="${a.disponibles()}" class="badge text-bg-light">20</span></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(actividades)}"><td colspan="4" class="text-center text-muted py-4">Todavía no hay actividades. Creá la primera.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragmentos :: pie}"></footer>
+</body>
+</html>
